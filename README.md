@@ -80,4 +80,4 @@ O jogo detecta automaticamente quantas existem (até 12) e sorteia entre elas a 
 
 ---
 
-<p align="center">Feito com 🔴🔵 para os eventos da <strong>Hiper Roll Embalagens</strong></p>
+<p align="center">Feito para os eventos da <strong>Hiper Roll Embalagens</strong></p>
