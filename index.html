@@ -26,38 +26,51 @@
       <button class="mute-btn" id="muteBtn" aria-label="Ativar ou desativar som">🔊</button>
     </div>
 
-    <div class="board-wrap">
-      <canvas id="board" width="520" height="520"></canvas>
+    <div class="game-area">
+      <div class="board-column">
+        <div class="board-wrap">
+          <canvas id="board" width="520" height="520"></canvas>
 
-      <div class="overlay" id="startOverlay">
-        <img class="overlay-logo" src="assets/Novo-Logotipo-HiperRoll.png" alt="Hiper Roll" onerror="this.style.display='none'">
-        <h2>Snake Hiper Roll</h2>
-        <p>Use as setas ou arraste o dedo para mover.<br>Coma as logos e cresça!</p>
-        <button id="startBtn">Jogar</button>
+          <div class="overlay" id="startOverlay">
+            <img class="overlay-logo" src="assets/Novo-Logotipo-HiperRoll.png" alt="Hiper Roll" onerror="this.style.display='none'">
+            <h2>Snake Hiper Roll</h2>
+            <p>Use as setas ou arraste o dedo para mover.<br>Coma as logos e cresça!</p>
+            <input type="text" id="playerName" maxlength="10" placeholder="Seu nome (até 10 letras)" autocomplete="off">
+            <button id="startBtn">Jogar</button>
+          </div>
+
+          <div class="overlay hidden" id="gameOverOverlay">
+            <h2>Fim de jogo</h2>
+            <p id="finalScore">Você fez 0 pontos</p>
+            <p class="rank-note hidden" id="rankNote"></p>
+            <button id="restartBtn">Jogar novamente</button>
+          </div>
+
+          <div class="overlay hidden" id="pauseOverlay">
+            <h2>Pausado</h2>
+            <p>Pressione espaço para continuar</p>
+          </div>
+        </div>
+
+        <div class="touch-controls" id="touchControls">
+          <button data-dir="up" aria-label="Cima">▲</button>
+          <div class="touch-row">
+            <button data-dir="left" aria-label="Esquerda">◀</button>
+            <button data-dir="down" aria-label="Baixo">▼</button>
+            <button data-dir="right" aria-label="Direita">▶</button>
+          </div>
+        </div>
+
+        <footer class="footer">HiperRoll Embalagens</footer>
       </div>
 
-      <div class="overlay hidden" id="gameOverOverlay">
-        <h2>Fim de jogo</h2>
-        <p id="finalScore">Você fez 0 pontos</p>
-        <button id="restartBtn">Jogar novamente</button>
-      </div>
-
-      <div class="overlay hidden" id="pauseOverlay">
-        <h2>Pausado</h2>
-        <p>Pressione espaço para continuar</p>
-      </div>
+      <aside class="leaderboard">
+        <h3>🏆 Top 5</h3>
+        <ol id="leaderboardList" class="leaderboard-list">
+          <li class="leaderboard-empty">Carregando...</li>
+        </ol>
+      </aside>
     </div>
-
-    <div class="touch-controls" id="touchControls">
-      <button data-dir="up" aria-label="Cima">▲</button>
-      <div class="touch-row">
-        <button data-dir="left" aria-label="Esquerda">◀</button>
-        <button data-dir="down" aria-label="Baixo">▼</button>
-        <button data-dir="right" aria-label="Direita">▶</button>
-      </div>
-    </div>
-
-    <footer class="footer">Hiper Roll Embalagens</footer>
   </div>
 
 <script src="script.js"></script>

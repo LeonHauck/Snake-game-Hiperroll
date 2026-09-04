@@ -105,6 +105,21 @@ html, body {
   transform: scale(0.94);
 }
 
+.game-area {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.board-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
 .board-wrap {
   position: relative;
   border-radius: var(--radius);
@@ -115,6 +130,113 @@ html, body {
     0 20px 50px rgba(0, 0, 0, 0.55),
     inset 0 0 40px rgba(228, 16, 43, 0.04);
   transition: box-shadow 0.3s ease;
+}
+
+.leaderboard {
+  width: 220px;
+  flex-shrink: 0;
+  background: linear-gradient(145deg, #171d40, #0c1130);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+}
+
+.leaderboard h3 {
+  margin: 0 0 12px;
+  font-size: 15px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.leaderboard-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.leaderboard-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 14px;
+}
+
+.leaderboard-list li.rank-1 { background: rgba(255, 176, 32, 0.16); }
+.leaderboard-list li.rank-2 { background: rgba(200, 210, 230, 0.1); }
+.leaderboard-list li.rank-3 { background: rgba(200, 140, 90, 0.12); }
+
+.leaderboard-rank {
+  font-weight: 800;
+  color: var(--muted);
+  width: 18px;
+  text-align: center;
+}
+
+.leaderboard-name {
+  flex: 1;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.leaderboard-list li.rank-1 .leaderboard-name {
+  color: #ffe066;
+  text-shadow:
+    0 0 4px rgba(255, 224, 102, 0.9),
+    0 0 10px rgba(255, 176, 32, 0.75),
+    0 0 20px rgba(255, 176, 32, 0.45);
+  animation: neon-pulse 1.8s ease-in-out infinite;
+}
+
+.leaderboard-list li.rank-2 .leaderboard-name {
+  color: #e4ebfa;
+  text-shadow:
+    0 0 4px rgba(228, 235, 250, 0.85),
+    0 0 10px rgba(180, 195, 220, 0.6),
+    0 0 18px rgba(180, 195, 220, 0.35);
+}
+
+.leaderboard-list li.rank-3 .leaderboard-name {
+  color: #f0b183;
+  text-shadow:
+    0 0 4px rgba(240, 177, 131, 0.85),
+    0 0 10px rgba(201, 123, 61, 0.6),
+    0 0 18px rgba(201, 123, 61, 0.35);
+}
+
+@keyframes neon-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 4px rgba(255, 224, 102, 0.9),
+      0 0 10px rgba(255, 176, 32, 0.75),
+      0 0 20px rgba(255, 176, 32, 0.45);
+  }
+  50% {
+    text-shadow:
+      0 0 6px rgba(255, 224, 102, 1),
+      0 0 16px rgba(255, 176, 32, 0.9),
+      0 0 30px rgba(255, 176, 32, 0.6);
+  }
+}
+
+.leaderboard-score {
+  font-weight: 800;
+  color: var(--red);
+}
+
+.leaderboard-empty {
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+  padding: 8px 0;
 }
 
 .board-wrap.boost {
@@ -189,6 +311,44 @@ html, body {
   line-height: 1.5;
 }
 
+.overlay input {
+  margin-top: 4px;
+  width: 100%;
+  max-width: 240px;
+  padding: 12px 16px;
+  font-size: 15px;
+  text-align: center;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  outline: none;
+}
+
+.overlay input::placeholder {
+  color: var(--muted);
+}
+
+.overlay input:focus {
+  border-color: var(--red);
+}
+
+.overlay input.input-error {
+  border-color: var(--red);
+  animation: input-shake 0.3s ease;
+}
+
+@keyframes input-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.rank-note {
+  color: #ffb020 !important;
+  font-weight: 700;
+}
+
 .overlay button {
   margin-top: 8px;
   padding: 12px 32px;
@@ -218,7 +378,6 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  margin-top: 10px;
 }
 
 .touch-controls button {
@@ -244,7 +403,6 @@ html, body {
 }
 
 .footer {
-  margin-top: 4px;
   font-size: 11px;
   letter-spacing: 2px;
   color: var(--muted);
@@ -291,9 +449,21 @@ html, body {
     padding: 6px;
   }
 
+  .game-area {
+    gap: 12px;
+  }
+
+  .board-column {
+    gap: 8px;
+  }
+
+  .leaderboard {
+    width: min(88vw, 520px);
+    padding: 12px 16px;
+  }
+
   .touch-controls {
     gap: 12px;
-    margin-top: 8px;
   }
 
   .touch-controls button {

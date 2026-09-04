@@ -12,8 +12,71 @@ const startOverlay = document.getElementById("startOverlay");
 const gameOverOverlay = document.getElementById("gameOverOverlay");
 const pauseOverlay = document.getElementById("pauseOverlay");
 const finalScoreEl = document.getElementById("finalScore");
+const rankNoteEl = document.getElementById("rankNote");
 const startBtn = document.getElementById("startBtn");
 const restartBtn = document.getElementById("restartBtn");
+const playerNameInput = document.getElementById("playerName");
+const leaderboardList = document.getElementById("leaderboardList");
+
+const LEADERBOARD_API = "api";
+playerNameInput.value = localStorage.getItem("hiperroll_snake_name") || "";
+
+const RANK_MEDALS = ["🥇", "🥈", "🥉"];
+
+function renderLeaderboard(entries) {
+  leaderboardList.innerHTML = "";
+  if (!entries || entries.length === 0) {
+    leaderboardList.innerHTML = '<li class="leaderboard-empty">Seja o primeiro a pontuar!</li>';
+    return;
+  }
+  entries.forEach((entry, i) => {
+    const li = document.createElement("li");
+    if (i < 3) li.classList.add(`rank-${i + 1}`);
+    const rankLabel = RANK_MEDALS[i] || `${i + 1}º`;
+    li.innerHTML = `
+      <span class="leaderboard-rank">${rankLabel}</span>
+      <span class="leaderboard-name"></span>
+      <span class="leaderboard-score">${entry.score}</span>
+    `;
+    li.querySelector(".leaderboard-name").textContent = entry.name;
+    leaderboardList.appendChild(li);
+  });
+}
+
+async function fetchLeaderboard() {
+  try {
+    const res = await fetch(`${LEADERBOARD_API}/leaderboard.php`);
+    const data = await res.json();
+    if (data.ok) renderLeaderboard(data.leaderboard);
+  } catch (err) {
+    leaderboardList.innerHTML = '<li class="leaderboard-empty">Placar indisponível</li>';
+  }
+}
+
+async function submitScore(name, finalScore) {
+  try {
+    const res = await fetch(`${LEADERBOARD_API}/submit_score.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, score: finalScore }),
+    });
+    const data = await res.json();
+    if (data.ok) {
+      renderLeaderboard(data.leaderboard);
+      const madeTop5 = data.leaderboard.some(
+        (e) => e.name.toLowerCase() === name.toLowerCase() && e.score === finalScore
+      );
+      if (madeTop5 && finalScore > 0) {
+        rankNoteEl.textContent = "🏆 Você entrou no Top 5!";
+        rankNoteEl.classList.remove("hidden");
+      }
+    }
+  } catch (err) {
+    // sem conexão com o placar — segue o jogo normalmente
+  }
+}
+
+fetchLeaderboard();
 
 const logo = new Image();
 let logoLoaded = false;
@@ -271,12 +334,14 @@ const keyMap = {
 };
 
 window.addEventListener("keydown", (e) => {
-  if (e.code === "Space") {
+  if (e.code === "Space" && document.activeElement !== playerNameInput) {
     e.preventDefault();
     if (running) {
       togglePause();
-    } else if (!gameOverOverlay.classList.contains("hidden") || !startOverlay.classList.contains("hidden")) {
+    } else if (!gameOverOverlay.classList.contains("hidden")) {
       startGame();
+    } else if (!startOverlay.classList.contains("hidden")) {
+      attemptStart();
     }
     return;
   }
@@ -321,6 +386,22 @@ function togglePause() {
   if (!paused) requestAnimationFrame(loop);
 }
 
+let currentPlayerName = "";
+
+function attemptStart() {
+  const name = playerNameInput.value.trim();
+  if (!name) {
+    playerNameInput.classList.remove("input-error");
+    void playerNameInput.offsetWidth;
+    playerNameInput.classList.add("input-error");
+    playerNameInput.focus();
+    return;
+  }
+  currentPlayerName = name;
+  localStorage.setItem("hiperroll_snake_name", name);
+  startGame();
+}
+
 function startGame() {
   getAudioCtx();
   playStartSound();
@@ -330,6 +411,8 @@ function startGame() {
   startOverlay.classList.add("hidden");
   gameOverOverlay.classList.add("hidden");
   pauseOverlay.classList.add("hidden");
+  rankNoteEl.classList.add("hidden");
+  rankNoteEl.textContent = "";
   lastStepTime = performance.now();
   requestAnimationFrame(loop);
 }
@@ -342,6 +425,7 @@ function endGame() {
     localStorage.setItem("hiperroll_snake_highscore", String(highScore));
     highscoreEl.textContent = highScore;
   }
+  if (score > 0) submitScore(currentPlayerName, score);
   finalScoreEl.textContent = `Você fez ${score} ponto${score === 1 ? "" : "s"}`;
   gameOverOverlay.classList.remove("hidden");
 }
@@ -601,8 +685,17 @@ function loop(now) {
   if (running) requestAnimationFrame(loop);
 }
 
-startBtn.addEventListener("click", startGame);
+startBtn.addEventListener("click", attemptStart);
 restartBtn.addEventListener("click", startGame);
+playerNameInput.addEventListener("keydown", (e) => {
+  if (e.code === "Enter") {
+    e.preventDefault();
+    attemptStart();
+  }
+});
+playerNameInput.addEventListener("input", () => {
+  playerNameInput.classList.remove("input-error");
+});
 
 resetState();
 render();
