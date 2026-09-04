@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 const GRID_SIZE = 20;
 const CELL = canvas.width / GRID_SIZE;
 const BASE_SPEED_MS = 95;
-const MIN_SPEED_MS = 55;
+const MIN_SPEED_MS = 68;
 
 const scoreEl = document.getElementById("score");
 const highscoreEl = document.getElementById("highscore");
@@ -159,7 +159,7 @@ const POPUP_DURATION_MS = 900;
 const BONUS_LOGO_COUNT = 13;
 const POINTS_PER_FOOD = 10;
 
-let snake, direction, nextDirection, foods, score, highScore, running, paused, stepMs, lastStepTime, pulseT;
+let snake, direction, directionQueue, foods, score, highScore, running, paused, stepMs, lastStepTime, pulseT;
 let boostActive, boostEndTime, flashStartTime, popup;
 let bobRollCatches, scoreMultiplier, nextBobRollScore, progressScore;
 
@@ -174,7 +174,7 @@ function resetState() {
     { x: mid - 3, y: mid },
   ];
   direction = { x: 1, y: 0 };
-  nextDirection = { x: 1, y: 0 };
+  directionQueue = [];
   score = 0;
   stepMs = BASE_SPEED_MS;
   pulseT = 0;
@@ -256,8 +256,11 @@ function endGoldenMode() {
 }
 
 function setDirection(x, y) {
-  if (x === -direction.x && y === -direction.y) return;
-  nextDirection = { x, y };
+  const last = directionQueue.length > 0 ? directionQueue[directionQueue.length - 1] : direction;
+  if (x === last.x && y === last.y) return;
+  if (x === -last.x && y === -last.y) return;
+  if (directionQueue.length >= 2) return;
+  directionQueue.push({ x, y });
 }
 
 const keyMap = {
@@ -344,7 +347,9 @@ function endGame() {
 }
 
 function step() {
-  direction = nextDirection;
+  if (directionQueue.length > 0) {
+    direction = directionQueue.shift();
+  }
   const head = {
     x: snake[0].x + direction.x,
     y: snake[0].y + direction.y,
@@ -394,7 +399,7 @@ function step() {
   }
 
   scoreEl.textContent = String(score);
-  stepMs = Math.max(MIN_SPEED_MS, BASE_SPEED_MS - Math.floor(score / 60) * 4);
+  stepMs = Math.max(MIN_SPEED_MS, BASE_SPEED_MS - Math.floor(score / 120) * 3);
 }
 
 function roundedRect(x, y, w, h, r) {
