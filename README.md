@@ -1,6 +1,6 @@
-# 🐍 Hiper Roll Snake
+# 🐍 HiperRoll Snake
 
-Um jogo da cobrinha clássico, com visual moderno e a identidade da **Hiper Roll Embalagens** — a cobra "come" a logo da marca e, de vez em quando, o mascote **Bob Roll** aparece para desbloquear uma fase bônus. Tem placar compartilhado, então dá pra rodar como competição entre várias pessoas jogando de aparelhos diferentes.
+Um jogo da cobrinha clássico, com visual moderno e a identidade da **HiperRoll Embalagens** — a cobra "come" a logo da marca e, de vez em quando, o mascote **BobRoll** aparece para desbloquear uma fase bônus. Tem placar compartilhado, então dá pra rodar como competição entre várias pessoas jogando de aparelhos diferentes.
 
 Feito para rodar em totens, tablets e celulares em eventos da marca. Sem build, sem frameworks — só HTML, CSS, JS e um mini-backend em PHP para o placar.
 
@@ -19,18 +19,18 @@ O jogo bombou tanto internamente que virou uma competição na empresa, com o ti
 - Digite um nome (até 10 letras) para entrar no placar
 - **Desktop**: setas do teclado ou `W A S D` para mover, `Espaço` para começar, pausar/retomar ou reiniciar a partida
 - **Celular/tablet**: arraste o dedo na tela ou use os botões direcionais na parte inferior
-- Coma as logos da Hiper Roll para crescer e pontuar
-- A cada **50 pontos**, o **Bob Roll** aparece no lugar da logo normal
-- Ao capturar o Bob Roll, a cobra entra em **modo bônus**: fica dourada, ganha um pequeno boost de velocidade e o tabuleiro se enche de 13 logos extras para caçar
-- Cada Bob Roll capturado aumenta o **multiplicador de pontos** (x2, x4, x6...) válido durante a fase bônus daquele momento — esses pontos entram na pontuação total, mas não contam para o próximo Bob Roll aparecer
+- Coma as logos da HiperRoll para crescer e pontuar
+- A cada **50 pontos**, o **BobRoll** aparece no lugar da logo normal
+- Ao capturar o BobRoll, a cobra entra em **modo bônus**: fica dourada, ganha um pequeno boost de velocidade e o tabuleiro se enche de 13 logos extras para caçar
+- Cada BobRoll capturado aumenta o **multiplicador de pontos** (x2, x4, x6...) válido durante a fase bônus daquele momento — esses pontos entram na pontuação total, mas não contam para o próximo Bob Roll aparecer
 - Seu recorde pessoal fica salvo no navegador, e sua melhor pontuação entra no **placar Top 5**, visível para qualquer pessoa jogando de qualquer aparelho
 
 ## ✨ Funcionalidades
 
 - Visual escuro moderno com gradientes nas cores da marca
 - Placar Top 5 compartilhado entre todos os jogadores (qualquer dispositivo), com destaque neon para os 3 primeiros colocados
-- Efeitos sonoros retrô gerados via Web Audio API (sem arquivos de áudio externos), incluindo um som e brilho especiais para o Bob Roll
-- Recorte automático do fundo branco das fotos do Bob Roll, direto no navegador (via canvas)
+- Efeitos sonoros retrô gerados via Web Audio API (sem arquivos de áudio externos), incluindo um som e brilho especiais para o BobRoll
+- Recorte automático do fundo branco das fotos do BobRoll, direto no navegador (via canvas)
 - Buffer de direção: dois comandos rápidos em sequência não se perdem, tornando o controle mais responsivo
 - Totalmente responsivo, com controles touch otimizados para celular
 - Botão de mudo com preferência salva
@@ -71,7 +71,7 @@ Snake-Game/
 
 Como o jogo processa imagens no canvas (para recortar o fundo do Bob Roll) e usa PHP para o placar, abrir o `index.html` direto com duplo clique tem duas limitações:
 
-- O recorte de fundo do Bob Roll é bloqueado por restrição de segurança do navegador (`file://`)
+- O recorte de fundo do BobRoll é bloqueado por restrição de segurança do navegador (`file://`)
 - O placar não funciona, já que arquivos `.php` não são executados sem um servidor com PHP
 
 Para testar o visual e o jogo em si, um servidor estático já resolve o recorte de imagem:
@@ -118,4 +118,4 @@ O jogo detecta automaticamente quantas existem (até 12) e sorteia entre elas a 
 
 ---
 
-<p align="center">Feito para os eventos da <strong>Hiper Roll Embalagens</strong></p>
+<p align="center">Feito para os eventos da <strong>HiperRoll Embalagens</strong></p>
