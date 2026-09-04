@@ -6,6 +6,14 @@ Feito para rodar em totens, tablets e celulares em eventos da marca. Sem build, 
 
 ---
 
+## 🏁 O campeonato
+
+O jogo bombou tanto internamente que virou uma competição na empresa, com o time de Marketing divulgando a disputa pelo Top 5:
+
+![Divulgação do campeonato Hiper Roll Snake](docs/campeonato-marketing.jpg)
+
+---
+
 ## 🎮 Como jogar
 
 - Digite um nome (até 10 letras) para entrar no placar
